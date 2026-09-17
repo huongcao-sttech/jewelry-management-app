@@ -21,19 +21,22 @@ namespace MyProject.Web.Controllers
         }
 
         // GET: ProductsController
-        public async Task<ActionResult> Index()
+        public async Task<ActionResult> Index(int page = 1, int pageSize = 5)
         {
-           var result = await _productAppService.GetAllAsync(
+            var result = await _productAppService.GetAllAsync(
                new PagedProductResultRequestDto
                {
-                   MaxResultCount = 100,
-                   SkipCount = 0
+                   MaxResultCount = pageSize,
+                   SkipCount = (page - 1) * pageSize
                }
            );
 
             var model = new ProductListViewModel
             {
-                Products = result.Items
+                Products = result.Items,
+                TotalCount = result.TotalCount,
+                CurrentPage = page,
+                PageSize = pageSize
             };
 
             return View(model);

@@ -1,7 +1,6 @@
 ﻿@using MyProject.Web.Models.Products
 @using MyProject.Web.Startup
 
-@* models *@
 @model ProductListViewModel
 
 @{
@@ -15,65 +14,116 @@
             <div class="col-sm-6">
                 <h1>@L("Products")</h1>
             </div>
-            @* <div class="col-sm-6">
+            <div class="col-sm-6">
                 <a href="javascript:;" data-bs-toggle="modal" data-bs-target="#TenantCreateModal" class="btn bg-blue float-sm-right">
                     <i class="fa fa-plus-square"></i>
                     @L("Create")
                 </a>
-            </div> *@
+            </div>
         </div>
     </div>
 </section>
-<div>
-    <section class="content">
-        <div class="container-fluid">
 
-            @foreach (var product in Model.Products)
-            {
-                <div style="border: 1px solid #ddd; padding: 15px; margin-bottom: 10px;">
 
-                    <h3>@product.Title</h3>
-
-                    <p>
-                        <strong>Description:</strong>
-                        @product.Description
-                    </p>
-
-                    <p>
-                        <strong>Material:</strong>
-                        @product.Material
-                    </p>
-
-                    <p>
-                        <strong>Status:</strong>
-                        @product.Status
-                    </p>
-
-                    <p>
-                        <strong>Category:</strong>
-                        @product.Category?.Name
-                    </p>
-
-                    @if (product.Images != null)
-                    {
-                        <div>
-                            <strong>Image:</strong>
-                            <br />
-                            @{
-                                foreach (var image in product.Images)
-                                {
-                                    <img src="@image.Url"
-                                         alt="@product.Title"
-                                         width="150"
-                                         style="margin-right: 10px;" />
-                                }
-                            }        
-                        </div>
-                    }
-
+<section class="content">
+    <div class="container-fluid">
+        <div class="card">
+            <div class="card-header">
+                <div class="row">
+                    <div class="col">
+                    </div>
+                    <div class="col"></div>
+                    <div class="col">
+                        @await Html.PartialAsync("~/Views/Products/Index.AdvancedSearch.cshtml")
+                    </div>
                 </div>
-            }
+            </div>
+            <div class="card-body">
+                @foreach (var product in Model.Products)
+                {
+                    <div style="border: 1px solid #ddd; padding: 15px; margin-bottom: 10px;">
+                        <div class="d-flex justify-content-between">
+                            <h3>@product.Title</h3>
+                            <div>
+                                <button type="button" class="btn btn-outline-primary">
+                                    <i class="far fa-edit"></i>
+                                </button>
+
+                                <button type="button" class="btn btn-outline-danger">
+                                    <i class="far fa-trash-alt"></i>
+                                </button>
+                            </div>
+                        </div>
+
+                        <p>
+                            <strong>Description:</strong>
+                            @product.Description
+                        </p>
+
+                        <p>
+                            <strong>Material:</strong>
+                            @product.Material
+                        </p>
+
+                        <p>
+                            <strong>Status:</strong>
+                            @product.Status
+                        </p>
+
+                        <p>
+                            <strong>Category:</strong>
+                            @product.Category?.Name
+                        </p>
+
+                        @if (product.Images != null)
+                        {
+                            <div>
+                                <strong>Image:</strong>
+                                <br />
+                                @{
+                                    foreach (var image in product.Images)
+                                    {
+                                        <img src="@image.Url"
+                                             alt="@product.Title"
+                                             width="150"
+                                             style="margin-right: 10px;" />
+                                    }
+                                }
+                            </div>
+                        }
+                    </div>
+                }
+            </div>
+            <div class="card-footer">
+                @* Pagination *@
+                <div class="d-flex justify-content-end">
+                    <nav aria-label="Page navigation products">
+                        <ul class="pagination">
+                            <li class="page-item">
+                                <a class="page-link" href="@Url.Action("Index", new { page = Model.CurrentPage - 1 })" aria-label="Previous">
+                                    <span aria-hidden="true">&laquo;</span>
+                                </a>
+                            </li>
+                            @for (var i = 1; i <= Model.TotalPages; i++)
+                            {
+                                <li class="page-item @(i == Model.CurrentPage ? "active" : "")">
+                                    <a class="page-link"
+                                       href="@Url.Action("Index", new { page = i })">
+                                        @i
+                                    </a>
+                                </li>
+                            }
+                            <li class="page-item">
+                                <a class="page-link" href="@Url.Action("Index", new { page = Model.CurrentPage + 1 })" aria-label="Next">
+                                    <span aria-hidden="true">&raquo;</span>
+                                </a>
+                            </li>
+                        </ul>
+                    </nav>
+                </div>
+            </div>
 
         </div>
-    </section>
-</div>
+    </div>
+    </div>
+</section>
