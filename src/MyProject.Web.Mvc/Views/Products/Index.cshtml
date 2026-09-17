@@ -1,0 +1,79 @@
+﻿@using MyProject.Web.Models.Products
+@using MyProject.Web.Startup
+
+@* models *@
+@model ProductListViewModel
+
+@{
+    ViewBag.CurrentPageName = PageNames.About;
+    ViewBag.Title = L("About");
+}
+
+<section class="content-header">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-sm-6">
+                <h1>@L("Products")</h1>
+            </div>
+            @* <div class="col-sm-6">
+                <a href="javascript:;" data-bs-toggle="modal" data-bs-target="#TenantCreateModal" class="btn bg-blue float-sm-right">
+                    <i class="fa fa-plus-square"></i>
+                    @L("Create")
+                </a>
+            </div> *@
+        </div>
+    </div>
+</section>
+<div>
+    <section class="content">
+        <div class="container-fluid">
+
+            @foreach (var product in Model.Products)
+            {
+                <div style="border: 1px solid #ddd; padding: 15px; margin-bottom: 10px;">
+
+                    <h3>@product.Title</h3>
+
+                    <p>
+                        <strong>Description:</strong>
+                        @product.Description
+                    </p>
+
+                    <p>
+                        <strong>Material:</strong>
+                        @product.Material
+                    </p>
+
+                    <p>
+                        <strong>Status:</strong>
+                        @product.Status
+                    </p>
+
+                    <p>
+                        <strong>Category:</strong>
+                        @product.Category?.Name
+                    </p>
+
+                    @if (product.Images != null)
+                    {
+                        <div>
+                            <strong>Image:</strong>
+                            <br />
+                            @{
+                                foreach (var image in product.Images)
+                                {
+                                    <img src="@image.Url"
+                                         alt="@product.Title"
+                                         width="150"
+                                         style="margin-right: 10px;" />
+                                }
+                            }        
+                        </div>
+                    }
+
+                </div>
+            }
+
+        </div>
+    </section>
+</div>
