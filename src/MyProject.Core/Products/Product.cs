@@ -1,4 +1,5 @@
 ﻿using Abp.Domain.Entities.Auditing;
+using MyProject.ProductCategories;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;

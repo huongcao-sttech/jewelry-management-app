@@ -1,4 +1,5 @@
 ﻿using Abp.Domain.Entities.Auditing;
+using MyProject.Products;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -7,7 +8,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace MyProject.Products
+namespace MyProject.ProductCategories
 {
     [Table("Jew_ProductCategory")]
     public class ProductCategory : FullAuditedEntity<long>

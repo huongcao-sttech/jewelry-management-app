@@ -4,6 +4,7 @@ using MyProject.Authorization.Users;
 using MyProject.MultiTenancy;
 using Microsoft.EntityFrameworkCore;
 using MyProject.Products;
+using MyProject.ProductCategories;
 
 namespace MyProject.EntityFrameworkCore;
 

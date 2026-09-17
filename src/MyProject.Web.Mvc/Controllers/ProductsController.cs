@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using MyProject.Authorization;
 using MyProject.Controllers;
+using MyProject.ProductCategory;
 using MyProject.Products;
 using MyProject.Products.Dto;
 using MyProject.Web.Models.Products;
@@ -14,15 +15,18 @@ namespace MyProject.Web.Controllers
     public class ProductsController : MyProjectControllerBase
     {
         private readonly IProductAppService _productAppService;
+        private readonly IProductCategoryAppService _productCategoryAppService;
 
-        public ProductsController(IProductAppService productAppService)
+        public ProductsController(IProductAppService productAppService, IProductCategoryAppService productCategoryAppService)
         {
             _productAppService = productAppService;
+            _productCategoryAppService = productCategoryAppService;
         }
 
         // GET: ProductsController
         public async Task<ActionResult> Index(int page = 1, int pageSize = 5)
         {
+            // get products with pagination
             var result = await _productAppService.GetAllAsync(
                new PagedProductResultRequestDto
                {
@@ -39,76 +43,40 @@ namespace MyProject.Web.Controllers
                 PageSize = pageSize
             };
 
+
+            // get categories into viewbag
+            var categories = _productCategoryAppService.GetAllAsync(
+                    new ProductCategories.Dto.PagedProductCategoryResultRequestDto()
+                )
+                .Result.Items;
+
+            ViewBag.Categories = categories;
+
             return View(model);
         }
 
-        // GET: ProductsController/Details/5
-        public ActionResult Details(int id)
-        {
-            return View();
-        }
-
-        // GET: ProductsController/Create
-        public ActionResult Create()
-        {
-            return View();
-        }
-
         // POST: ProductsController/Create
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Create(IFormCollection collection)
+        public async Task<ActionResult> CreateProduct(CreateProductDto input)
         {
-            try
-            {
-                return RedirectToAction(nameof(Index));
-            }
-            catch
-            {
-                return View();
-            }
+            await _productAppService.CreateProduct(input);
+
+            return RedirectToAction("Index");
         }
 
         // GET: ProductsController/Edit/5
-        public ActionResult Edit(int id)
+        public async Task<ActionResult> EditProductModal(long id)
         {
-            return View();
-        }
+            var product = await _productAppService.GetProductById(id);
 
-        // POST: ProductsController/Edit/5
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Edit(int id, IFormCollection collection)
-        {
-            try
-            {
-                return RedirectToAction(nameof(Index));
-            }
-            catch
-            {
-                return View();
-            }
-        }
+            // get categories into viewbag
+            var categories = _productCategoryAppService.GetAllAsync(
+                    new ProductCategories.Dto.PagedProductCategoryResultRequestDto()
+                )
+                .Result.Items;
 
-        // GET: ProductsController/Delete/5
-        public ActionResult Delete(int id)
-        {
-            return View();
-        }
+            ViewBag.Categories = categories;
 
-        // POST: ProductsController/Delete/5
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Delete(int id, IFormCollection collection)
-        {
-            try
-            {
-                return RedirectToAction(nameof(Index));
-            }
-            catch
-            {
-                return View();
-            }
+            return PartialView("_EditModal", product);
         }
     }
 }

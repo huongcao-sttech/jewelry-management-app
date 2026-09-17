@@ -1,0 +1,79 @@
+﻿@using MyProject.Products
+@using MyProject.Web.Models.Common.Modals
+@model MyProject.Products.Dto.ProductDto
+
+@{
+    Layout = null;
+}
+
+@await Html.PartialAsync("~/Views/Shared/Modals/_ModalHeader.cshtml", new ModalHeaderViewModel(L("EditProduct")))
+
+<form id="ProductEditForm">
+    <div class="modal-body">
+        @* Id *@
+        <input type="hidden" name="Id" value="@Model.Id" />
+
+        @* Title *@
+        <div class="mb-3">
+            <label for="EditTitle" class="form-label">Title</label>
+            <input type="text" class="form-control" id="EditTitle" name="Title" value="@Model.Title" required />
+        </div>
+
+        @* Description *@
+        <div class="mb-3">
+            <label for="EditDescription" class="form-label">Description</label>
+            <textarea class="form-control" id="EditDescription" name="Description" rows="4">@Model.Description</textarea>
+        </div>
+
+        @* Material *@
+        <div class="mb-3">
+            <label for="EditMaterial" class="form-label">Material</label>
+            <input type="text" class="form-control" id="EditMaterial" name="Material" value="@Model.Material" required />
+        </div>
+
+        @* Status *@
+        <div class="mb-3">
+            <label for="EditStatus" class="form-label">Status</label>
+            <select class="form-select" id="EditStatus" name="Status">
+                <option value="0" selected="@(Model.Status == ProductStatus.IN_STOCK)">In Stock</option>
+                <option value="1" selected="@(Model.Status == ProductStatus.OUT_OF_STOCK)">Out Of Stock</option>
+            </select>
+        </div>
+
+        @* Category *@
+        <div class="mb-3">
+            <label for="EditCategoryId" class="form-label">Category</label>
+            <select class="form-select" id="EditCategoryId" name="CategoryId">
+                @if (ViewBag.Categories != null)
+                {
+                    foreach (var category in ViewBag.Categories)
+                    {
+                        <option value="@category.Id" selected="@(Model.Category != null && Model.Category.Id == category.Id)">
+                            @category.Name
+                        </option>
+                    }
+                }
+            </select>
+        </div>
+
+        @* Current Images *@
+        @* @if (Model.Images != null && Model.Images.Any())
+        {
+            <div class="mb-3">
+                <label class="form-label">Current Images</label>
+                <div class="d-flex flex-wrap gap-3">
+                    @foreach (var image in Model.Images)
+                    {
+                        <div class="position-relative">
+                            <img src="@image.Url" alt="Product image" class="rounded border" style="width: 120px; height: 120px; object-fit: cover;" />
+                        </div>
+                    }
+                </div>
+            </div>
+        } *@
+    </div>
+
+    <div class="modal-footer">
+        @await Html.PartialAsync("~/Views/Shared/Modals/_ModalFooterWithSaveAndCancel.cshtml")
+    </div>
+</form>

@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using MyProject.ProductCategories.Dto;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -14,8 +15,6 @@ namespace MyProject.Products.Dto
             CreateMap<Product, ProductDto>();
 
             CreateMap<ProductImage, ProductImageDto>();
-
-            CreateMap<ProductCategory, ProductCategoryDto>();
         }
     }
 }

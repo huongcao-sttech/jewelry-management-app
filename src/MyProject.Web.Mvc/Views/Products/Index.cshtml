@@ -1,4 +1,4 @@
-﻿@using MyProject.Web.Models.Products
+@using MyProject.Web.Models.Products
 @using MyProject.Web.Startup
 
 @model ProductListViewModel
@@ -15,7 +15,7 @@
                 <h1>@L("Products")</h1>
             </div>
             <div class="col-sm-6">
-                <a href="javascript:;" data-bs-toggle="modal" data-bs-target="#TenantCreateModal" class="btn bg-blue float-sm-right">
+                <a href="javascript:;" data-bs-toggle="modal" data-bs-target="#ProductCreateModal" class="btn bg-blue float-sm-right">
                     <i class="fa fa-plus-square"></i>
                     @L("Create")
                 </a>
@@ -45,7 +45,7 @@
                         <div class="d-flex justify-content-between">
                             <h3>@product.Title</h3>
                             <div>
-                                <button type="button" class="btn btn-outline-primary">
+                                <button type="button" class="btn btn-outline-primary btn-edit-product" data-id="@product.Id">
                                     <i class="far fa-edit"></i>
                                 </button>
 
@@ -125,5 +125,20 @@
 
         </div>
     </div>
-    </div>
 </section>
+
+@* Product create modal *@
+@await Html.PartialAsync("~/Views/Products/_CreateModal.cshtml")
+
+<div class="modal fade" id="ProductEditModal" tabindex="-1" role="dialog" aria-labelledby="ProductEditModalLabel" data-backdrop="static">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+        </div>
+    </div>
+</div>
+
+
+@section scripts
+{
+    <script src="~/view-resources/Views/Products/Index.js" asp-append-version="true"></script>
+}

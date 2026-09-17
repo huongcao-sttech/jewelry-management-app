@@ -6,7 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace MyProject.Products.Dto
+namespace MyProject.ProductCategories.Dto
 {
     [AutoMapFrom(typeof(ProductCategory))]
     public class ProductCategoryDto : EntityDto<long>
