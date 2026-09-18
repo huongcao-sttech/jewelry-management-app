@@ -4,6 +4,25 @@ Hệ thống được phát triển trên nền tảng **ASP.NET Core MVC & jQue
 
 ---
 
+## ⚡ Các Tính Năng Nổi Bật Của ABP Framework
+
+ABP Framework cung cấp sẵn các hạ tầng mạnh mẽ giúp chuẩn hóa và tối ưu hóa quá trình phát triển ứng dụng:
+
+1. **Dependency Injection (DI)**: Cung cấp hạ tầng DI tự động theo quy ước (Convention-based DI). Các Application Service, Repository được tự động đăng ký vào IoC Container (mặc định dạng Transient cho mỗi Request) giúp việc tiêm phụ thuộc (như `IRepository<Product, long>`) cực kỳ đơn giản.
+2. **Repository Pattern**: Tự động tạo mặc định Repository cho mỗi Entity (ví dụ: `IRepository<Product, long>`) cung cấp sẵn các phương thức tương tác cơ bản như `FirstOrDefaultAsync`, `InsertAsync`, `DeleteAsync`, `GetAllIncludingAsync`.
+3. **Authorization (Phân quyền)**: Phân quyền khai báo (Declarative Permission Check) bằng `[AbpAuthorize]` hoặc `[AbpMvcAuthorize]`. Tự động chặn truy cập nếu người dùng không đủ quyền hoặc chưa đăng nhập.
+4. **Validation (Xác thực dữ liệu)**: Tự động kiểm tra tham số đầu vào `null`, validate dữ liệu tự động dựa trên Data Annotations (`[Required]`, `[StringLength]`,...) và các quy tắc custom. Nếu dữ liệu không hợp lệ, hệ thống tự ném `AbpValidationException` và xử lý thông báo về Client.
+5. **Audit Logging (Nhật ký hệ thống)**: Tự động ghi lại nhật ký thao tác (User, IP address, Browser, Service, Method, tham số, thời gian thực thi) cho từng Request theo cấu hình.
+6. **Unit Of Work (UOW)**: Mỗi phương thức trong Application Service mặc định được quản lý như một Unit of Work. ABP tự mở kết nối và khởi tạo Transaction. Nếu phương thức chạy thành công không có lỗi, Transaction tự động Commit và đóng kết nối. Mọi thay đổi thuộc tính trên Entity được tự động theo dõi và lưu trữ mà không cần gọi `_repository.Update(...)` thủ công.
+7. **Exception Handling (Xử lý ngoại lệ)**: Bắt và xử lý ngoại lệ tự động toàn cục. Nếu có lỗi xảy ra, ABP tự động ghi Log và trả về phản hồi JSON chuẩn cho Client. Khi ném `UserFriendlyException`, thông báo lỗi nghiệp vụ sẽ được hiển thị trực tiếp cho người dùng.
+8. **Logging (Ghi log)**: Tích hợp sẵn hạ tầng ghi log thông qua đối tượng `Logger` hoặc `ILogger<T>`, hỗ trợ Log4Net/Microsoft Logging dễ dàng cấu hình ghi ra File hoặc Console.
+9. **Localization (Đa ngôn ngữ)**: Hỗ trợ đa ngôn ngữ thông qua phương thức `L("StringKey")`, tự động dịch thông điệp theo ngôn ngữ/vùng quốc gia (Culture) của người dùng hiện tại.
+10. **Auto Mapping (Ánh xạ tự động)**: Tích hợp thư viện AutoMapper qua `IObjectMapper` (`ObjectMapper.Map(...)`) giúp chuyển đổi tự động các thuộc tính giữa Entity và DTO dựa theo quy ước đặt tên.
+11. **Dynamic API Layer**: Tự động tạo ra các endpoint Web API từ các Application Service ở thời điểm runtime, cho phép Client gọi trực tiếp các phương thức AppService qua HTTP mà không cần viết Controller wrapper thủ công.
+12. **Dynamic JavaScript AJAX Proxy**: Tự động sinh ra các hàm Proxy Javascript ở phía Client, giúp việc gọi các phương thức Application Service ở giao diện Web đơn giản như gọi hàm JavaScript thông thường.
+
+---
+
 ## 📁 Cấu Trúc Source Code (`aspnet-core/src/`)
 
 ```text
