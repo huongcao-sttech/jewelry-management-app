@@ -9,8 +9,8 @@ using System.Threading.Tasks;
 
 namespace MyProject.Products
 {
-    public interface IProductAppService : IAsyncCrudAppService<ProductDto, long, PagedProductResultRequestDto, CreateProductDto, ProductDto>
+    public interface IProductAppService : IAsyncCrudAppService<ProductDto, long, PagedProductResultRequestDto, CreateProductDto, UpdateProductDto>
     {
-        Task<PagedResultDto<ProductDto>> GetAllAsync(PagedProductResultRequestDto input);
+        Task<ProductDto> GetProductById(long id);
     }
 }

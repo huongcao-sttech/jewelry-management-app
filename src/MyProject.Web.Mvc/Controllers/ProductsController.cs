@@ -1,8 +1,10 @@
-﻿using Abp.AspNetCore.Mvc.Authorization;
+using Abp.AspNetCore.Mvc.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
 using MyProject.Authorization;
 using MyProject.Controllers;
+using MyProject.ProductCategory;
 using MyProject.Products;
 using MyProject.Products.Dto;
 using MyProject.Web.Models.Products;
@@ -14,98 +16,76 @@ namespace MyProject.Web.Controllers
     public class ProductsController : MyProjectControllerBase
     {
         private readonly IProductAppService _productAppService;
+        private readonly IProductCategoryAppService _productCategoryAppService;
+        private readonly ILogger<ProductsController> _logger;
 
-        public ProductsController(IProductAppService productAppService)
+        public ProductsController(
+            IProductAppService productAppService,
+            IProductCategoryAppService productCategoryAppService,
+            ILogger<ProductsController> logger)
         {
             _productAppService = productAppService;
+            _productCategoryAppService = productCategoryAppService;
+            _logger = logger;
         }
 
         // GET: ProductsController
-        public async Task<ActionResult> Index()
+        public async Task<ActionResult> Index(int page = 1, int pageSize = 5)
         {
-           var result = await _productAppService.GetAllAsync(
+            _logger.LogInformation($"[ProductsController] Loading Index view - Page: {page}, PageSize: {pageSize}");
+
+            // get products with pagination
+            var result = await _productAppService.GetAllAsync(
                new PagedProductResultRequestDto
                {
-                   MaxResultCount = 100,
-                   SkipCount = 0
+                   MaxResultCount = pageSize,
+                   SkipCount = (page - 1) * pageSize
                }
            );
 
             var model = new ProductListViewModel
             {
-                Products = result.Items
+                Products = result.Items,
+                TotalCount = result.TotalCount,
+                CurrentPage = page,
+                PageSize = pageSize
             };
+
+            // get categories into viewbag
+            var categories = (await _productCategoryAppService.GetAllAsync(
+                    new ProductCategories.Dto.PagedProductCategoryResultRequestDto()
+                )).Items;
+
+            ViewBag.Categories = categories;
 
             return View(model);
         }
 
-        // GET: ProductsController/Details/5
-        public ActionResult Details(int id)
-        {
-            return View();
-        }
-
-        // GET: ProductsController/Create
-        public ActionResult Create()
-        {
-            return View();
-        }
-
         // POST: ProductsController/Create
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Create(IFormCollection collection)
+        public async Task<ActionResult> CreateProduct(CreateProductDto input)
         {
-            try
-            {
-                return RedirectToAction(nameof(Index));
-            }
-            catch
-            {
-                return View();
-            }
+            _logger.LogInformation($"[ProductsController] Received request to create product: '{input?.Title}'");
+
+            await _productAppService.CreateAsync(input);
+
+            return RedirectToAction("Index");
         }
 
         // GET: ProductsController/Edit/5
-        public ActionResult Edit(int id)
+        public async Task<ActionResult> EditProductModal(long id)
         {
-            return View();
-        }
+            _logger.LogInformation($"[ProductsController] Loading EditProductModal partial view for Product Id: {id}");
 
-        // POST: ProductsController/Edit/5
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Edit(int id, IFormCollection collection)
-        {
-            try
-            {
-                return RedirectToAction(nameof(Index));
-            }
-            catch
-            {
-                return View();
-            }
-        }
+            var product = await _productAppService.GetProductById(id);
 
-        // GET: ProductsController/Delete/5
-        public ActionResult Delete(int id)
-        {
-            return View();
-        }
+            // get categories into viewbag
+            var categories = (await _productCategoryAppService.GetAllAsync(
+                    new ProductCategories.Dto.PagedProductCategoryResultRequestDto()
+                )).Items;
 
-        // POST: ProductsController/Delete/5
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Delete(int id, IFormCollection collection)
-        {
-            try
-            {
-                return RedirectToAction(nameof(Index));
-            }
-            catch
-            {
-                return View();
-            }
+            ViewBag.Categories = categories;
+
+            return PartialView("_EditModal", product);
         }
     }
 }

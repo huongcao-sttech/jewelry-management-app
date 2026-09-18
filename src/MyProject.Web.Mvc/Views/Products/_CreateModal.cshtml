@@ -1,0 +1,136 @@
+﻿@using MyProject.Web.Models.Common.Modals
+
+<div class="modal fade" id="ProductCreateModal" tabindex="-1"
+     aria-labelledby="ProductCreateModalLabel"
+     aria-hidden="true">
+
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+
+            @await Html.PartialAsync("~/Views/Shared/Modals/_ModalHeader.cshtml", new ModalHeaderViewModel(L("CreateProduct")))
+
+            <form id="ProductCreateForm" asp-controller="Products" asp-action="CreateProduct" method="post">
+
+                <div class="modal-body">
+
+                    <!-- Title -->
+                    <div class="mb-3">
+                        <label for="Title" class="form-label">
+                            Title
+                        </label>
+
+                        <input type="text"
+                               class="form-control"
+                               id="Title"
+                               name="Title"
+                               placeholder="Enter product title"
+                               required />
+                    </div>
+
+
+                    <!-- Description -->
+                    <div class="mb-3">
+                        <label for="Description" class="form-label">
+                            Description
+                        </label>
+
+                        <textarea class="form-control"
+                                  id="Description"
+                                  name="Description"
+                                  rows="4"
+                                  placeholder="Enter product description">
+                        </textarea>
+                    </div>
+
+
+                    <!-- Material -->
+                    <div class="mb-3">
+                        <label for="Material" class="form-label">
+                            Material
+                        </label>
+
+                        <input type="text"
+                               class="form-control"
+                               id="Material"
+                               name="Material"
+                               placeholder="Enter material"
+                               required />
+                    </div>
+
+
+                    <!-- Status -->
+                    <div class="mb-3">
+                        <label for="Status" class="form-label">
+                            Status
+                        </label>
+
+                        <select class="form-select"
+                                id="Status"
+                                name="Status">
+
+                            <option value="0">
+                                In Stock
+                            </option>
+
+                            <option value="1">
+                                Out Of Stock
+                            </option>
+
+                        </select>
+                    </div>
+
+
+                    <!-- Category -->
+                    <div class="mb-3">
+                        <label for="CategoryId" class="form-label">
+                            Category
+                        </label>
+
+                        <select class="form-select"
+                                id="CategoryId"
+                                name="CategoryId">
+
+                            <option value="">
+                                -- Select Category --
+                            </option>
+
+                            @foreach (var category in ViewBag.Categories)
+                            {
+                                <option value="@category.Id">
+                                    @category.Name
+                                </option>
+                            }
+
+                        </select>
+                    </div>
+
+
+                    <!-- Images -->
+                    @* <div class="mb-3">
+                        <label for="Images" class="form-label">
+                            Product Images
+                        </label>
+
+                        <input type="file"
+                               class="form-control"
+                               id="Images"
+                               name="Images"
+                               multiple
+                               accept="image/*" />
+
+                        <div class="form-text">
+                            You can select multiple images.
+                        </div>
+                    </div> *@
+
+                </div>
+
+                <div class="modal-footer">
+                    @await Html.PartialAsync("~/Views/Shared/Modals/_ModalFooterWithSaveAndCancel.cshtml")
+                </div>
+
+            </form>
+
+        </div>
+    </div>
+</div>

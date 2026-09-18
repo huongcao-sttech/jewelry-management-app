@@ -1,6 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using MyProject.Products;
+using MyProject.ProductCategories;
 using System;
 using System.Collections.Generic;
 using System.Linq;

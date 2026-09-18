@@ -59,7 +59,7 @@ public class MyProjectNavigationProvider : NavigationProvider
                     PageNames.Products,
                     L("Products"),
                     url: "Products",
-                    icon: "fas fa-solid fa-bag-shopping",
+                    icon: "fas fa-boxes",
                     permissionDependency: new SimplePermissionDependency(PermissionNames.Pages_Roles)
                 )
             )

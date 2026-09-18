@@ -1,6 +1,5 @@
-﻿using Abp.Application.Services.Dto;
+using Abp.Application.Services.Dto;
 using Abp.AutoMapper;
-using MyProject.ProductCategories.Dto;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,8 +8,8 @@ using System.Threading.Tasks;
 
 namespace MyProject.Products.Dto
 {
-    [AutoMapFrom(typeof(Product))]
-    public class ProductDto : EntityDto<long>
+    [AutoMapTo(typeof(Product))]
+    public class UpdateProductDto : EntityDto<long>
     {
         public string Title { get; set; }
 
@@ -20,8 +19,8 @@ namespace MyProject.Products.Dto
 
         public ProductStatus Status { get; set; }
 
-        public List<ProductImageDto> Images { get; set; }
+        //public List<ProductImageDto>? Images { get; set; }
 
-        public ProductCategoryDto Category { get; set; }
+        public long CategoryId { get; set; }
     }
 }
