@@ -2,7 +2,7 @@
     var _productService = abp.services.app.product,
         _$modal = $('#ProductEditModal');
 
-    // 1. Mở Modal Edit khi bấm nút Edit Product
+    // 1. function handle edit product
     $(document).on('click', '.btn-edit-product', function (e) {
         e.preventDefault();
         var productId = $(this).attr('data-id');
@@ -21,7 +21,7 @@
         });
     });
 
-    // 2. Hàm xử lý lưu thông tin Product
+    // 2. function handle save product
     function saveProduct() {
         var _$form = $('#ProductEditForm');
 
@@ -33,7 +33,7 @@
 
         abp.ui.setBusy(_$modal);
 
-        _productService.updateProduct(product)
+        _productService.update(product)
             .done(function () {
                 _$modal.modal('hide');
                 abp.notify.info('Cập nhật sản phẩm thành công!');
@@ -44,16 +44,46 @@
             });
     }
 
-    // Lắng nghe sự kiện click nút Save
+    // 3. function deleteProduct
+    function deleteProduct(productId) {
+        if (!productId) {
+            return;
+        }
+
+        abp.message.confirm(
+            'Bạn có chắc muốn xóa sản phẩm này không?',
+            'Xác nhận xóa',
+            function (isConfirmed) {
+                if (!isConfirmed) {
+                    return;
+                }
+
+                _productService.delete({ id: productId })
+                    .done(function () {
+                        abp.notify.success('Xóa sản phẩm thành công!');
+                        location.reload();
+                    });
+            }
+        );
+    }
+
+    // listen click button save in modal ProductEditModal
     $(document).on('click', '#ProductEditModal .save-button', function (e) {
         e.preventDefault();
         saveProduct();
     });
 
-    // Lắng nghe sự kiện submit của Form Edit
+    // listen submit form ProductEditForm
     $(document).on('submit', '#ProductEditForm', function (e) {
         e.preventDefault();
         saveProduct();
+    });
+
+    // listen click button delete product
+    $(document).on('click', '.btn-delete-product', function (e) {
+        e.preventDefault();
+        var productId = $(this).attr('data-id');
+        deleteProduct(productId);
     });
 
 })(jQuery);

@@ -58,7 +58,7 @@ namespace MyProject.Web.Controllers
         // POST: ProductsController/Create
         public async Task<ActionResult> CreateProduct(CreateProductDto input)
         {
-            await _productAppService.CreateProduct(input);
+            await _productAppService.CreateAsync(input);
 
             return RedirectToAction("Index");
         }

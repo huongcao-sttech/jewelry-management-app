@@ -19,7 +19,7 @@ namespace MyProject.Products.Dto
 
         public ProductStatus Status { get; set; }
 
-        public List<ProductImageDto>? Images { get; set; }
+        //public List<ProductImageDto>? Images { get; set; }
 
         public long CategoryId { get; set; }
     }

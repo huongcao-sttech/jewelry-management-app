@@ -14,4 +14,7 @@
   <ItemGroup>
     <ProjectReference Include="..\MyProject.Core\MyProject.Core.csproj" />
   </ItemGroup>
+  <ItemGroup>
+    <Folder Include="ProductImages\Dto\" />
+  </ItemGroup>
 </Project>

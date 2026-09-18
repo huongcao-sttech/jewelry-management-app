@@ -11,9 +11,6 @@ namespace MyProject.Products
 {
     public interface IProductAppService : IAsyncCrudAppService<ProductDto, long, PagedProductResultRequestDto, CreateProductDto, UpdateProductDto>
     {
-        Task<PagedResultDto<ProductDto>> GetAllAsync(PagedProductResultRequestDto input);
-        Task<ProductDto> CreateProduct(CreateProductDto input);
-        Task<ProductDto> UpdateProduct(UpdateProductDto input);
         Task<ProductDto> GetProductById(long id);
     }
 }

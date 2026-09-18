@@ -4,8 +4,8 @@
 @model ProductListViewModel
 
 @{
-    ViewBag.CurrentPageName = PageNames.About;
-    ViewBag.Title = L("About");
+    ViewBag.Title = L("Products");
+    ViewBag.CurrentPageName = PageNames.Products;
 }
 
 <section class="content-header">
@@ -49,7 +49,7 @@
                                     <i class="far fa-edit"></i>
                                 </button>
 
-                                <button type="button" class="btn btn-outline-danger">
+                                <button type="button" class="btn btn-outline-danger btn-delete-product" data-id ="@product.Id">
                                     <i class="far fa-trash-alt"></i>
                                 </button>
                             </div>
@@ -67,7 +67,7 @@
 
                         <p>
                             <strong>Status:</strong>
-                            @product.Status
+                            @L(product.Status.ToString())
                         </p>
 
                         <p>
